@@ -10,7 +10,11 @@ module.exports = class Product {
   }
 
   save() {
-   
+
+   return db.execute(
+    'INSERT INTO products (title, price, imageUrl ) VALUES (?, ?, ?)',
+    [this.title, this.price, this.imageUrl]
+   );
   }
 
   static deleteById(id){
