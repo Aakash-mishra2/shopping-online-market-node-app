@@ -37,6 +37,7 @@ exports.getCart = (req, res, next) => {
     Product.fetchAll(products => {
       const productsInCart = [];
       for (product of products){
+        //filter out the products that are actually in the cart.
         const cartProductData = cart.products.find(prod => prod.id === product.id);
         if( cartProductData ){
             productsInCart.push({productData: product, qty: cartProductData.qty});
@@ -61,6 +62,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
+  //could have also passed product price as hidden input to cart but this is cleaner approach.
   Product.findById(prodId, product => {
     Cart.deleteProduct(prodId, product.price);
     res.redirect('/cart');
