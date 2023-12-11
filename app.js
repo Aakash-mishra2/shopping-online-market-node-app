@@ -26,7 +26,7 @@ app.use(errorController.get404);
 //to sync all your models you defined using define method to the database by creating appropriate tables for them. 
 sequelize.sync().then(result => {
     //console.log(result);
+    app.listen(3000);
 })
 .catch(err => { console.log(err); });
 
-app.listen(3000);
