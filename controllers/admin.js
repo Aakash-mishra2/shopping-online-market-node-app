@@ -1,5 +1,4 @@
 const Product = require('../models/product');
-
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
@@ -7,7 +6,6 @@ exports.getAddProduct = (req, res, next) => {
     editing: false
   });
 };
-
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
@@ -21,7 +19,6 @@ exports.postAddProduct = (req, res, next) => {
   })
   .catch(err => console.log(err));
 };
-
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
@@ -40,7 +37,6 @@ exports.getEditProduct = (req, res, next) => {
     });
   });
 };
-
 exports.postEditProduct = (req, res, next) => {
   //fetch info for the product then create a new product instance and populate it with that information and then call save.
   const prodId = req.body.productId;

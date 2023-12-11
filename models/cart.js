@@ -70,5 +70,4 @@ module.exports = class Cart {
       }
     });
   }
-
 };
