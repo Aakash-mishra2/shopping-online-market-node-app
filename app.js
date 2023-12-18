@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
+const Product = require('./models/product');
+const User = require('./models/user');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -22,11 +24,19 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-//whenever I start my application all my models auto get converted to tables whenever we start our application.
-//to sync all your models you defined using define method to the database by creating appropriate tables for them. 
-sequelize.sync().then(result => {
+Product.belongsTo(User,{
+    constraints: true,
+    onDelete: 'CASCADE'
+});
+User.hasMany(Product);
+
+sequelize
+    .sync({force: true})
+    .then(result => {
     //console.log(result);
     app.listen(3000);
 })
-.catch(err => { console.log(err); });
+.catch(err => { 
+    console.log(err); 
+});
 

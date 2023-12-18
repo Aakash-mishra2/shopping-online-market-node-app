@@ -24,16 +24,6 @@ exports.getProduct = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
-  // Product.findByPk(prodId)
-  // .then(product => {
-  //   //product is still an array and view expects a single object so pass [0]th index object
-  //   res.render('shop/product-detail', {
-  //     product: product,
-  //     pageTitle: product.title,
-  //     path: '/products'
-  //  });
-  // })
-  // .catch(err => console.log(err));
 
 };
 exports.getIndex = (req, res, next) => {

@@ -22,6 +22,7 @@ exports.postAddProduct = (req, res, next) => {
     .then(result => {
       // console.log(result);
       console.log('Created Product');
+      res.redirect('/admin/products');
     })
     .catch(err => {
       console.log(err);
@@ -55,7 +56,8 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
-  Product.findById(prodId)
+  //deleteById does not exist in sequelize
+  Product.findByPk(prodId)
   .then(product => {
     product.title = updatedTitle;
     product.price = updatedPrice;
@@ -68,7 +70,6 @@ exports.postEditProduct = (req, res, next) => {
     res.redirect('/admin/products');
   })
   .catch(err => console.log(err));
-  res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {
@@ -85,6 +86,16 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId);
-  res.redirect('/admin/products');
+  //Product.destroy({
+    //options 
+  //});
+  Product.findByPk(prodId)
+  .then(product => {
+    return product.destroy();
+  })
+  .then(result => {
+    console.log('DESTORYED PRODUCT');
+    res.redirect('/admin/products');
+  })
+  .catch(err => console.log(err));
 };
