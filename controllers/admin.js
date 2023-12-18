@@ -13,11 +13,14 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
+  req.user.create
   Product.create({
     title: title,
     price: price,
     imageUrl: imageUrl,
-    description: description
+    description: description,
+    //instead of manually fetching logged in user like this sequelize lets us use magic methods.
+    userId: req.user.id 
   })
     .then(result => {
       // console.log(result);
