@@ -7,6 +7,8 @@ const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -25,6 +27,8 @@ app.use((req, res, next) => {
     // we start our server successfully with app listen 
     // and that is only true if we are done with initialization code of sequelize so its guaranteed that we will find a user here
     User.findByPk(1).then(user => {
+        //adding a new 'user' to request object just make sure do not override a existing one like 'body'.
+        
         // this user is not js object but a sequelize object with all values stored in database and all the utility methods that sequelize added like destroy. we are storing this sequelize object in this request which is a extended object and not just a js object with just field values in it.
         // and therefore whenever we call request user in our app we can execute methods like destroy
         req.user = user;
@@ -35,12 +39,14 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
-
+//relations
 Product.belongsTo(User, {
     constraints: true,
     onDelete: 'CASCADE'
 });
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
 
 sequelize
     // .sync({force: true})
